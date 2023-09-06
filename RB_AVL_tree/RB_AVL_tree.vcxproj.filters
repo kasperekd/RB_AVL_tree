@@ -21,9 +21,15 @@
     <ClCompile Include="IO.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="RB.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IO.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="RB.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -128,10 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="IO.cpp" />
+    <ClCompile Include="RB.cpp" />
     <ClCompile Include="RB_AVL_tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IO.h" />
+    <ClInclude Include="RB.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
