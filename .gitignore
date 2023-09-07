@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/RB_AVL_tree/word2.txt
+/RB_AVL_tree/rb.txt
+/RB_AVL_tree/numbers.txt
