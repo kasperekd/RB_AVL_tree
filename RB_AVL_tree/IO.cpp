@@ -11,7 +11,7 @@ char **readDictionary(const char DIC_NAME[], int *SIZE_OF_DIC, int amount)
 	ifstream fread;
 	fread.open(DIC_NAME, ios::in);
 
-	if (!fread) return NULL;
+	if (!fread) return nullptr;
 
 	string buffer;
 	int max_size = 0;
