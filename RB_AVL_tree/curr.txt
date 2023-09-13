@@ -1,5 +1,4 @@
-        aaaaaa(R)
-    aaaa(B)
+    aaaaaa(B)
         aaa(R)
 aa(B)
     a(B)

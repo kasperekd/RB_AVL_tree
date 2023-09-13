@@ -17,7 +17,7 @@
 using namespace std;
 
 const char NAME_OF_DIC[] = "words.txt";
-int AMOUNT_TO_READ = 10;
+int AMOUNT_TO_READ = 5;
 
 int main()
 {
@@ -34,7 +34,7 @@ int main()
 		return 1;
 	}
 
-	struct rbtree *RBroot = nullptr;
+	struct rbtree *RBroot = RB_NULL;
 	
 	rbtree_add(&RBroot, dictionary[0], (int)dictionary[0]);
 	for (size_t i = 1; i < dic_count; i++)
@@ -47,14 +47,14 @@ int main()
 	char for_delete[] = "a";
 	char for_delete2[] = "aa";
 	char for_delete3[] = "aaa";
-	char for_delete4[] = "aae";
+	char for_delete4[] = "aaaa";
 
-	RBroot = rbtree_delete(RBroot, for_delete);
-	RBroot = rbtree_delete(RBroot, for_delete2);
-	RBroot = rbtree_delete(RBroot, for_delete3);
+	//RBroot = rbtree_delete(RBroot, for_delete);
+	//RBroot = rbtree_delete(RBroot, for_delete2);
+	//RBroot = rbtree_delete(RBroot, for_delete3);
 	RBroot = rbtree_delete(RBroot, for_delete4);
 
-	rbtree_add(&RBroot, for_delete, (int)dictionary[0]);
+	//rbtree_add(&RBroot, for_delete, (int)dictionary[0]);
 
 	if (dic_count < 500) // outputting trees to a file
 	{
