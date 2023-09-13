@@ -14,10 +14,13 @@
 
 //https://adroit-things.com/data-structures/red-black-trees-deletion/
 
+//Все листья, не содержащие данных — чёрные.
+//Оба потомка каждого красного узла — чёрные.
+
 using namespace std;
 
 const char NAME_OF_DIC[] = "words.txt";
-int AMOUNT_TO_READ = 10;
+int AMOUNT_TO_READ = 5;
 
 int main()
 {
@@ -34,7 +37,7 @@ int main()
 		return 1;
 	}
 
-	struct rbtree *RBroot = nullptr;
+	struct rbtree *RBroot = RB_NULL;
 	
 	rbtree_add(&RBroot, dictionary[0], (int)dictionary[0]);
 	for (size_t i = 1; i < dic_count; i++)
@@ -49,10 +52,10 @@ int main()
 	char for_delete3[] = "aaa";
 	char for_delete4[] = "aae";
 
-	RBroot = rbtree_delete(RBroot, for_delete);
-	RBroot = rbtree_delete(RBroot, for_delete2);
-	RBroot = rbtree_delete(RBroot, for_delete3);
-	RBroot = rbtree_delete(RBroot, for_delete4);
+	rbtree_delete(RBroot, for_delete);
+	rbtree_delete(RBroot, for_delete2);
+	rbtree_delete(RBroot, for_delete3);
+	rbtree_delete(RBroot, for_delete4);
 
 	rbtree_add(&RBroot, for_delete, (int)dictionary[0]);
 
