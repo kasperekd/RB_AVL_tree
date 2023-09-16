@@ -9,15 +9,11 @@
 //https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
 //https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
 //https://github.com/ocornut/imgui
-//https://opensource.apple.com/source/network_cmds/network_cmds-596/unbound/util/rbtree.c.auto.html
-
-
-//https://adroit-things.com/data-structures/red-black-trees-deletion/
 
 using namespace std;
 
 const char NAME_OF_DIC[] = "words.txt";
-int AMOUNT_TO_READ = 5;
+int AMOUNT_TO_READ = 50000;
 
 int main()
 {
@@ -44,19 +40,19 @@ int main()
 
 	fTree("rb1.txt", RBroot);
 
-	char for_delete[] = "a";
+	char for_delete[] = "aaaa";
 	char for_delete2[] = "aa";
 	char for_delete3[] = "aaa";
 	char for_delete4[] = "aaaa";
 
-	//RBroot = rbtree_delete(RBroot, for_delete);
+	RBroot = rbtree_delete(RBroot, for_delete);
 	//RBroot = rbtree_delete(RBroot, for_delete2);
 	//RBroot = rbtree_delete(RBroot, for_delete3);
-	RBroot = rbtree_delete(RBroot, for_delete4);
+	//RBroot = rbtree_delete(RBroot, for_delete4);
 
 	//rbtree_add(&RBroot, for_delete, (int)dictionary[0]);
 
-	if (dic_count < 500) // outputting trees to a file
+	if (dic_count < 500) // output tree to file
 	{
 		fTree("rb.txt", RBroot);
 	}

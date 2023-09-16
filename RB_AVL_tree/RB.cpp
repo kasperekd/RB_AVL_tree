@@ -193,26 +193,6 @@ struct rbtree *rbtree_lookup(struct rbtree *tree, char *key)
 	return tree;
 }
 
-//void rbtree_transplant(rbtree *root, rbtree *u, rbtree *v)
-//{
-//	if (u->parent == nullptr)
-//	{
-//		root = v;
-//	}
-//	else if (u == u->parent->left) 
-//	{
-//		u->parent->left = v;
-//	}
-//	else 
-//	{
-//		u->parent->right = v;
-//	}
-//	if (v != nullptr && v->parent != nullptr)
-//	{
-//		v->parent = u->parent;
-//	}	
-//}
-
 void rbtree_transplant(struct rbtree **root, struct rbtree *u, struct rbtree *v)
 {
 	if (u->parent == RB_NULL)
@@ -251,82 +231,10 @@ struct rbtree *rbtree_max(struct rbtree *tree)
 	return tree;
 }
 
-//void rbtree_deletefixup(rbtree *root, rbtree *x)
-//{
-//	while (x != root && x->color == 'B')
-//	{
-//		if (x == x->parent->left)
-//		{
-//			rbtree *w = x->parent->right;
-//			if (w->color == 'R')
-//			{
-//				w->color = 'B';
-//				x->parent->color = 'R';
-//				rbtree_left_rotate(&root, x->parent);
-//				w = x->parent->right;
-//			}
-//			if (w->left->color == 'B' && w->right->color == 'B')
-//			{
-//				w->color = 'R';
-//				x = x->parent;
-//			}
-//			else
-//			{
-//				if (w->right->color == 'B')
-//				{
-//					w->left->color = 'B';
-//					w->color = 'R';
-//					rbtree_right_rotate(&root, w);
-//					w = x->parent->right;
-//				}
-//				w->color = x->parent->color;
-//				x->parent->color = 'B';
-//				w->right->color = 'B';
-//				rbtree_left_rotate(&root, x->parent);
-//				x = root;
-//			}
-//		}
-//		else
-//		{
-//			rbtree *w = x->parent->left;
-//			if (w->color == 'R')
-//			{
-//				w->color = 'B';
-//				x->parent->color = 'R';
-//				rbtree_right_rotate(&root, x->parent);
-//				w = x->parent->left;
-//			}
-//			if (w->right->color == 'B' && w->left->color == 'B')
-//			{
-//				w->color = 'R';
-//				x = x->parent;
-//			}
-//			else
-//			{
-//				if (w->left->color == 'B')
-//				{
-//					w->right->color = 'B';
-//					w->color = 'R';
-//					rbtree_left_rotate(&root, w);
-//					w = x->parent->left;
-//				}
-//				w->color = x->parent->color;
-//				x->parent->color = 'B';
-//				w->left->color = 'B';
-//				rbtree_right_rotate(&root, x->parent);
-//				x = root;
-//			}
-//		}
-//	}
-//	x->color = 'B';
-//}
-
 void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 {
-	fTree("curr.txt", *root);
 	while (x != *root && x->color == 'B')
 	{
-		fTree("curr.txt", *root);
 		if (x == x->parent->left)
 		{
 			struct rbtree *w = x->parent->right;
@@ -334,9 +242,7 @@ void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 			{
 				w->color = 'B';
 				x->parent->color = 'R';
-				fTree("curr.txt", *root);
 				rbtree_left_rotate(root, x->parent);
-				fTree("curr.txt", *root);
 				w = x->parent->right;
 			}
 			if (w->left->color == 'B' && w->right->color == 'B')
@@ -350,17 +256,13 @@ void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 				{
 					w->left->color = 'B';
 					w->color = 'R';
-					fTree("curr.txt", *root);
 					rbtree_right_rotate(root, w);
-					fTree("curr.txt", *root);
 					w = x->parent->right;
 				}
 				w->color = x->parent->color;
 				x->parent->color = 'B';
 				w->right->color = 'B';
-				fTree("curr.txt", *root);
 				rbtree_left_rotate(root, x->parent);
-				fTree("curr.txt", *root);
 				x = *root;
 			}
 		}
@@ -371,9 +273,7 @@ void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 			{
 				w->color = 'B';
 				x->parent->color = 'R';
-				fTree("curr.txt", *root);
 				rbtree_right_rotate(root, x->parent);
-				fTree("curr.txt", *root);
 				w = x->parent->left;
 			}
 			if (w->left->color == 'B' && w->right->color == 'B')
@@ -387,82 +287,23 @@ void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 				{
 					w->right->color = 'B';
 					w->color = 'R';
-					fTree("curr.txt", *root);
 					rbtree_left_rotate(root, w);
-					fTree("curr.txt", *root);
 					w = x->parent->left;
 				}
 				w->color = x->parent->color;
 				x->parent->color = 'B';
-				w->left->color = 'B';
-				fTree("curr.txt", *root);
+				w->left->color = 'B';;
 				rbtree_right_rotate(root, x->parent);
-				fTree("curr.txt", *root);
 				x = *root;
 			}
 		}
 	}
-	fTree("curr.txt", *root);
 	x->color = 'B';
-	fTree("curr.txt", *root);
 }
-
-//rbtree *rbtree_delete(rbtree *root, char *key)
-//{
-//	rbtree *z;
-//	if (!(z = rbtree_lookup(root, key)))
-//	{
-//		return nullptr;
-//	}
-//	rbtree *x;
-//	rbtree *y = z;
-//	char ycolor = y->color;
-//	
-//	if (z->left == nullptr)
-//	{
-//		x = z->right;
-//		rbtree_transplant(root, z, z->right);
-//	}
-//	else if (z->right == nullptr)
-//	{
-//		x = z->left;
-//		rbtree_transplant(root, z, z->left);
-//	}
-//	else
-//	{
-//		y = rbtree_min(z->right);
-//		ycolor = y->color;
-//		x = y->right;
-//
-//		if (y->parent == z)
-//		{
-//			x->parent = y;
-//		}
-//		else
-//		{
-//			rbtree_transplant(root, y, y->right);
-//			y->right = z->right;
-//			y->right->parent = y;
-//		}
-//
-//		rbtree_transplant(root, z, y);
-//		y->left = z->left;
-//		y->left->parent = y;
-//		y->color = z->color;
-//	}
-//
-//	delete z;
-//
-//	if (ycolor == 'B') 
-//	{
-//		rbtree_deletefixup(root, x);
-//	}
-//}
 
 rbtree *rbtree_delete(rbtree *root, char *key)
 {
 	rbtree *z;
-	fTree("curr.txt", root);
 	if (!(z = rbtree_lookup(root, key)))
 	{
 		return root;
@@ -479,154 +320,43 @@ rbtree *rbtree_delete(rbtree *root, char *key)
 	if (z->left == RB_NULL && z->right == RB_NULL) // проверка на лист
 	{
 		//x = RB_NULL;
-		fTree("curr.txt", root);
 		rbtree_transplant(&root, z, RB_NULL);
-		fTree("curr.txt", root);
 	}
 	else if (z->left == RB_NULL)
 	{
 		x = z->right;
-		fTree("curr.txt", root);
 		rbtree_transplant(&root, z, z->right);
-		fTree("curr.txt", root);
 	}
 	else if (z->right == RB_NULL)
 	{
 		x = z->left;
-		fTree("curr.txt", root);
 		rbtree_transplant(&root, z, z->left);
-		fTree("curr.txt", root);
 	}
 	else
 	{
-		y = rbtree_min(z->right);
+		y = rbtree_max(z->left);
 		ycolor = y->color;
-		x = y->right;
+		x = y->left;
 
 		if (y->parent != z)
 		{
-			fTree("curr.txt", root);
-			rbtree_transplant(&root, y, y->right);
-			fTree("curr.txt", root);
-			y->right = z->right;
-			y->right->parent = y;
+			rbtree_transplant(&root, y, y->left);
+			y->left = z->left;
+			y->left->parent = y;
 		}
-		fTree("curr.txt", root);
 		rbtree_transplant(&root, z, y);
-		fTree("curr.txt", root);
-		y->left = z->left;
-		y->left->parent = y;
+		y->right = z->right;
+		y->right->parent = y;
 		y->color = z->color;
 	}
 
 	delete z;
 	z = RB_NULL;
 
-	//if (ycolor == 'B' && x != RB_NULL) // проверка на существование родителя и потомков
-	//{
-	//	rbtree_delete_fixup(&root, x);
-	//}
-	fTree("curr.txt", root);
 	rbtree_delete_fixup(&root, x);
-	fTree("curr.txt", root);
 
 	return root;
 }
-
-//struct rbtree *rbtree_delete(struct rbtree *root, char *key)
-//{
-//	struct rbtree *z = rbtree_lookup(root, key);
-//	if (z == NULL)
-//		return root;
-//	struct rbtree *y = z;
-//	char y_original_color = y->color;
-//	struct rbtree *x;
-//	if (z->left == NULL)
-//	{
-//		x = z->right;
-//		rbtree_transplant(&root, z, z->right);
-//	}
-//	else if (z->right == NULL)
-//	{
-//		x = z->left;
-//		rbtree_transplant(&root, z, z->left);
-//	}
-//	else
-//	{
-//		y = rbtree_min(z->right);
-//		y_original_color = y->color;
-//		x = y->right;
-//		if (y->parent == z)
-//			x->parent = y;
-//		else
-//		{
-//			rbtree_transplant(&root, y, y->right);
-//			y->right = z->right;
-//			y->right->parent = y;
-//		}
-//		rbtree_transplant(&root, z, y);
-//		y->left = z->left;
-//		y->left->parent = y;
-//		y->color = z->color;
-//	}
-//	if (y_original_color == 'B')
-//		rbtree_delete_fixup(&root, x);
-//	return root;
-//}
-
-//struct rbtree *rbtree_delete(struct rbtree *root, char *key)
-//{
-//	struct rbtree *z = rbtree_lookup(root, key);
-//	if (z == NULL)
-//		return root;
-//	struct rbtree *y = z;
-//	char y_original_color = y->color;
-//	struct rbtree *x;
-//	if (z->left == NULL)
-//	{
-//		x = z->right;
-//		rbtree_transplant(&root, z, z->right);
-//	}
-//	else if (z->right == NULL)
-//	{
-//		x = z->left;
-//		rbtree_transplant(&root, z, z->left);
-//	}
-//	else
-//	{
-//		y = rbtree_min(z->right);
-//		y_original_color = y->color;
-//		x = y->right;
-//		if (y->parent == z)
-//			x->parent = y;
-//		else
-//		{
-//			rbtree_transplant(&root, y, y->right);
-//			y->right = z->right;
-//			y->right->parent = y;
-//		}
-//		rbtree_transplant(&root, z, y);
-//		y->left = z->left;
-//		y->left->parent = y;
-//		y->color = z->color;
-//	}
-//	if (y_original_color == 'B' && x != nullptr)
-//		rbtree_delete_fixup(&root, x);
-//	return root;
-//}
-
-//struct rbtree *create_node(char *key, int value)
-//{
-//	struct rbtree *node = new struct rbtree;
-//	node->parent = NULL;
-//	node->left = NULL;
-//	node->right = NULL;
-//	node->color = 'R';
-//	node->key = new char[strlen(key) + 1];
-//	strcpy(node->key, key);
-//	node->value = value;
-//	return node;
-//}
 
 void printTree(std::ostream &stream, rbtree *tree, int space)
 {
