@@ -13,6 +13,10 @@ struct rbtree
 	int value;
 };
 
+#define RB_NULL &rb_null
+extern struct rbtree rb_null;
+
+
 void rbtree_add(struct rbtree **root, char* key, int value);
 struct rbtree *rbtree_lookup(struct rbtree *root, char *key);
 struct rbtree *rbtree_delete(struct rbtree *root, char *key);
