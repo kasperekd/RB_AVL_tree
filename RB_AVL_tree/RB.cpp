@@ -201,8 +201,7 @@ void rbtree_transplant(struct rbtree **root, struct rbtree *u, struct rbtree *v)
 		u->parent->left = v;
 	else
 		u->parent->right = v;
-	if (v != RB_NULL)
-		v->parent = u->parent;
+	v->parent = u->parent;
 }
 
 struct rbtree *rbtree_min(struct rbtree *tree)
@@ -292,7 +291,7 @@ void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 				}
 				w->color = x->parent->color;
 				x->parent->color = 'B';
-				w->left->color = 'B';;
+				w->left->color = 'B';
 				rbtree_right_rotate(root, x->parent);
 				x = *root;
 			}
@@ -301,7 +300,68 @@ void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 	x->color = 'B';
 }
 
-rbtree *rbtree_delete(rbtree *root, char *key)
+//struct rbtree *rbtree_delete(rbtree *root, char *key)
+//{
+//	rbtree *z;
+//	if (!(z = rbtree_lookup(root, key)))
+//	{
+//		return root;
+//	}
+//	if (z == root && z->left == RB_NULL && z->right == RB_NULL) // проверка на корень дерева
+//	{
+//		delete z;
+//		return RB_NULL;
+//	}
+//	rbtree *x = RB_NULL;
+//	rbtree *y = z;
+//	char ycolor = y->color;
+//
+//
+//	if (z->left == RB_NULL)
+//	{
+//		x = z->right;
+//		rbtree_transplant(&root, z, z->right);
+//	}
+//	else if (z->right == RB_NULL)
+//	{
+//		x = z->left;
+//		rbtree_transplant(&root, z, z->left);
+//	}
+//	else
+//	{
+//		y = rbtree_min(z->right);
+//		ycolor = y->color;
+//		x = y->right;
+//
+//
+//		if (y->parent != z)
+//		{
+//			rbtree_transplant(&root, y, y->right);
+//			y->right = z->right;
+//			y->right->parent = y;
+//		}
+//		else
+//		{
+//			x->parent = y;
+//		}
+//		rbtree_transplant(&root, z, y);
+//		y->left = z->left;
+//		y->left->parent = y;
+//		y->color = z->color;
+//
+//	}
+//
+//	delete z;
+//	z = RB_NULL;
+//	if (ycolor == 'B')
+//	{
+//		rbtree_delete_fixup(&root, x);
+//	}
+//
+//	return root;
+//}
+
+struct rbtree *rbtree_delete(rbtree *root, char *key)
 {
 	rbtree *z;
 	if (!(z = rbtree_lookup(root, key)))
@@ -338,22 +398,30 @@ rbtree *rbtree_delete(rbtree *root, char *key)
 		ycolor = y->color;
 		x = y->left;
 
+
 		if (y->parent != z)
 		{
 			rbtree_transplant(&root, y, y->left);
 			y->left = z->left;
 			y->left->parent = y;
 		}
+		else
+		{
+			x->parent = y;
+		}
 		rbtree_transplant(&root, z, y);
 		y->right = z->right;
 		y->right->parent = y;
 		y->color = z->color;
+
 	}
 
 	delete z;
 	z = RB_NULL;
-
-	rbtree_delete_fixup(&root, x);
+	if (ycolor == 'B')
+	{
+		rbtree_delete_fixup(&root, x);
+	}
 
 	return root;
 }

@@ -13,7 +13,7 @@
 using namespace std;
 
 const char NAME_OF_DIC[] = "words.txt";
-int AMOUNT_TO_READ = 50000;
+int AMOUNT_TO_READ = 5;
 
 int main()
 {
@@ -40,8 +40,8 @@ int main()
 
 	fTree("rb1.txt", RBroot);
 
-	char for_delete[] = "aaaa";
-	char for_delete2[] = "aa";
+	char for_delete[] = "a";
+	char for_delete2[] = "aaal";
 	char for_delete3[] = "aaa";
 	char for_delete4[] = "aaaa";
 
