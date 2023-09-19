@@ -6,6 +6,7 @@
 #include "RB.h"
 #include "IO.h"
 
+//https://www.youtube.com/watch?v=iw8N1_keEWA
 //https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
 //https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
 //https://github.com/ocornut/imgui
@@ -13,7 +14,7 @@
 using namespace std;
 
 const char NAME_OF_DIC[] = "words.txt";
-int AMOUNT_TO_READ = 5;
+int AMOUNT_TO_READ = 10;
 
 int main()
 {
@@ -40,13 +41,13 @@ int main()
 
 	fTree("rb1.txt", RBroot);
 
-	char for_delete[] = "a";
-	char for_delete2[] = "aaal";
+	char for_delete[] = "aa";
+	char for_delete2[] = "aaberg";
 	char for_delete3[] = "aaa";
 	char for_delete4[] = "aaaa";
 
 	RBroot = rbtree_delete(RBroot, for_delete);
-	//RBroot = rbtree_delete(RBroot, for_delete2);
+	RBroot = rbtree_delete(RBroot, for_delete2);
 	//RBroot = rbtree_delete(RBroot, for_delete3);
 	//RBroot = rbtree_delete(RBroot, for_delete4);
 
