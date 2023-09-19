@@ -156,7 +156,7 @@ void rbtree_add(struct rbtree **root, char *key, int value)
 
 	struct rbtree *new_node = create_node(key, value);
 
-	if (new_node == RB_NULL)
+	if (!new_node)
 	{
 		return;
 	}
@@ -300,17 +300,18 @@ void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 	x->color = 'B';
 }
 
-struct rbtree *rbtree_delete(rbtree *root, char *key)
+void rbtree_delete(rbtree **root, char *key)
 {
 	struct rbtree *z;
-	if (!(z = rbtree_lookup(root, key)))
+	if (!(z = rbtree_lookup(*root, key)))
 	{
-		return root;
+		return;
 	}
-	if (z == root && z->left == RB_NULL && z->right == RB_NULL) // проверка на корень дерева
+	if (z == *root && z->left == RB_NULL && z->right == RB_NULL) // проверка на корень дерева
 	{
 		delete z;
-		return RB_NULL;
+		*root = RB_NULL;
+		return;
 	}
 	struct rbtree *x = RB_NULL;
 	struct rbtree *y = z;
@@ -319,17 +320,17 @@ struct rbtree *rbtree_delete(rbtree *root, char *key)
 	if (z->left == RB_NULL && z->right == RB_NULL) // проверка на лист
 	{
 		//x = RB_NULL;
-		rbtree_transplant(&root, z, RB_NULL);
+		rbtree_transplant(&*root, z, RB_NULL);
 	}
 	else if (z->left == RB_NULL)
 	{
 		x = z->right;
-		rbtree_transplant(&root, z, z->right);
+		rbtree_transplant(&*root, z, z->right);
 	}
 	else if (z->right == RB_NULL)
 	{
 		x = z->left;
-		rbtree_transplant(&root, z, z->left);
+		rbtree_transplant(&*root, z, z->left);
 	}
 	else
 	{
@@ -339,7 +340,7 @@ struct rbtree *rbtree_delete(rbtree *root, char *key)
 
 		if (y->parent != z)
 		{
-			rbtree_transplant(&root, y, y->left);
+			rbtree_transplant(&*root, y, y->left);
 			y->left = z->left;
 			y->left->parent = y;
 		}
@@ -347,7 +348,7 @@ struct rbtree *rbtree_delete(rbtree *root, char *key)
 		{
 			x->parent = y;
 		}
-		rbtree_transplant(&root, z, y);
+		rbtree_transplant(&*root, z, y);
 		y->right = z->right;
 		y->right->parent = y;
 		y->color = z->color;
@@ -358,10 +359,10 @@ struct rbtree *rbtree_delete(rbtree *root, char *key)
 
 	if (ycolor == 'B')
 	{
-		rbtree_delete_fixup(&root, x);
+		rbtree_delete_fixup(&*root, x);
 	}
 
-	return root;
+	return;
 }
 
 void printTree(std::ostream &stream, struct rbtree *tree, int space)

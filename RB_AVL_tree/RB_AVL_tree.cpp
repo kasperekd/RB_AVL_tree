@@ -16,7 +16,7 @@ using namespace std;
 const char NAME_OF_DIC[] = "words.txt";
 const char NAME_OF_EXP[] = "lookup.txt";
 int STEP = 2500;
-int AMOUNT_TO_READ = 10;
+int AMOUNT_TO_READ = 50000;
 
 int main()
 {
@@ -40,18 +40,26 @@ int main()
 		char forDelete[] = "aa";
 		RBroot = RB_NULL;
 
-		rbtree_add(&RBroot, dictionary[0], (int)dictionary[0]);
+		rbtree_add(&RBroot, dictionary[0], 0);
 		for (int i = 1; i < 10; i++)
 		{
-			rbtree_add(&RBroot, dictionary[i], (int)dictionary[i]);
+			rbtree_add(&RBroot, dictionary[i], i);
 		}
 
-		fTree("preDelete.txt", RBroot);
-		rbtree_delete(RBroot, forDelete);
-		fTree("postDelete.txt", RBroot);
-		rbtree_free(&RBroot);
+		if (RBroot != RB_NULL || !RBroot)
+		{
+			fTree("preDelete.txt", RBroot);
+			rbtree_delete(&RBroot, forDelete);
+			fTree("postDelete.txt", RBroot);
+			rbtree_free(&RBroot);
+
+			if (!RBroot)
+			{
+				cout << "Removal experiment is done\n";
+			}
+		}
+		
 	}
-	
 	//========EXP DELETE========//
 
 	//========EXP LOOLUP========//
@@ -67,36 +75,32 @@ int main()
 	}
 	else
 	{
-		rbtree_add(&RBroot, dictionary[0], (int)dictionary[0]);
-		for (int i = 2; i < dic_count && i + STEP - 2 <= dic_count; i += STEP)
+		if (STEP > dic_count)
 		{
-			for (int j = i; j < i + STEP; j++)
-			{
-				rbtree_add(&RBroot, dictionary[j], (int)dictionary[j]);
-			}
-			char *word = dictionary[i];
-			auto begin = chrono::steady_clock::now();
-			struct rbtree *finded = rbtree_lookup(RBroot, word);
-			auto end_t = std::chrono::steady_clock::now();
-			auto elapsed_us = chrono::duration_cast<chrono::nanoseconds>(end_t - begin);
-			out << fixed << i + STEP - 2 << ": " << elapsed_us.count() / 1000000000.0 << '\t'<< finded->key << endl;
+			cout << "dictionary size(" << dic_count << ") less than step(" << STEP <<")\n";
 		}
-		out.close();
+		else
+		{
+			rbtree_add(&RBroot, dictionary[0], 0);
+			for (int i = 1; i < dic_count && i + STEP - 1 <= dic_count; i += STEP)
+			{
+				for (int j = i; j < i + STEP; j++)
+				{
+					rbtree_add(&RBroot, dictionary[j - 1], j - 1);
+				}
+				char *word = dictionary[i - 1];
+				auto begin = chrono::steady_clock::now();
+				struct rbtree *finded = rbtree_lookup(RBroot, word);
+				auto end_t = std::chrono::steady_clock::now();
+				auto elapsed_us = chrono::duration_cast<chrono::nanoseconds>(end_t - begin);
+				out << fixed << i + STEP - 1 << ": " << elapsed_us.count() / 1000000000.0 << '\t' << finded->key << endl;
+			}
+			out.close();
+			rbtree_free(&RBroot);
+			cout << "Lookup experiment is done\n";
+		}
 	}
 	//========EXP LOOLUP========//
-
-	fTree("rb1.txt", RBroot);
-
-	if (dic_count < 500) // output tree to file
-	{
-		fTree("rb.txt", RBroot);
-	}
-	else
-	{
-		cout << "The tree contains too many items to display. Trees with no more than 500 elements are supported for display\n";
-	}
-	
-	rbtree_free(&RBroot);
 
 	if (dictionary) // clear dictionary
 	{
