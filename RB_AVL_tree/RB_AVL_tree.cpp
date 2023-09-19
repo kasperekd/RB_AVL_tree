@@ -16,7 +16,7 @@ using namespace std;
 const char NAME_OF_DIC[] = "words.txt";
 const char NAME_OF_EXP[] = "lookup.txt";
 int STEP = 2500;
-int AMOUNT_TO_READ = 500000;
+int AMOUNT_TO_READ = 10;
 
 int main()
 {
@@ -37,7 +37,7 @@ int main()
 	//========EXP DELETE========//
 	if (dic_count >= 10)
 	{
-		char forDelete[] = "aaberg";
+		char forDelete[] = "aa";
 		RBroot = RB_NULL;
 
 		rbtree_add(&RBroot, dictionary[0], (int)dictionary[0]);

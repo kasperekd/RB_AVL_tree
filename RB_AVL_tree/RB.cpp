@@ -27,7 +27,7 @@ struct rbtree *create_node(char *key, int value)
 
 void rbtree_left_rotate(rbtree **root, rbtree *current)
 {
-	rbtree *y = current->right;
+	struct rbtree *y = current->right;
 	current->right = y->left;
 	if (y->left != RB_NULL)
 	{ 
@@ -52,7 +52,7 @@ void rbtree_left_rotate(rbtree **root, rbtree *current)
 
 void rbtree_right_rotate(rbtree **root, rbtree *current)
 {
-	rbtree *y = current->left;
+	struct rbtree *y = current->left;
 	current->left = y->right;
 	if (y->right != RB_NULL)
 	{ 
@@ -81,7 +81,7 @@ void rbtree_fix(rbtree **root, rbtree *current)
 	{
 		if (current->parent == current->parent->parent->left)
 		{
-			rbtree *uncle = current->parent->parent->right;
+			struct rbtree *uncle = current->parent->parent->right;
 			if (uncle->color == 'R')
 			{ 
 				current->parent->color = 'B';
@@ -103,7 +103,7 @@ void rbtree_fix(rbtree **root, rbtree *current)
 		}
 		else
 		{
-			rbtree *uncle = current->parent->parent->left;
+			struct rbtree *uncle = current->parent->parent->left;
 			if (uncle->color == 'R')
 			{
 				current->parent->color = 'B';
@@ -201,8 +201,7 @@ void rbtree_transplant(struct rbtree **root, struct rbtree *u, struct rbtree *v)
 		u->parent->left = v;
 	else
 		u->parent->right = v;
-	if (v != RB_NULL)
-		v->parent = u->parent;
+	v->parent = u->parent;
 }
 
 struct rbtree *rbtree_min(struct rbtree *tree)
@@ -292,7 +291,7 @@ void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 				}
 				w->color = x->parent->color;
 				x->parent->color = 'B';
-				w->left->color = 'B';;
+				w->left->color = 'B';
 				rbtree_right_rotate(root, x->parent);
 				x = *root;
 			}
@@ -301,9 +300,9 @@ void rbtree_delete_fixup(struct rbtree **root, struct rbtree *x)
 	x->color = 'B';
 }
 
-rbtree *rbtree_delete(rbtree *root, char *key)
+struct rbtree *rbtree_delete(rbtree *root, char *key)
 {
-	rbtree *z;
+	struct rbtree *z;
 	if (!(z = rbtree_lookup(root, key)))
 	{
 		return root;
@@ -313,8 +312,8 @@ rbtree *rbtree_delete(rbtree *root, char *key)
 		delete z;
 		return RB_NULL;
 	}
-	rbtree *x = RB_NULL;
-	rbtree *y = z;
+	struct rbtree *x = RB_NULL;
+	struct rbtree *y = z;
 	char ycolor = y->color;
 
 	if (z->left == RB_NULL && z->right == RB_NULL) // проверка на лист
@@ -344,6 +343,10 @@ rbtree *rbtree_delete(rbtree *root, char *key)
 			y->left = z->left;
 			y->left->parent = y;
 		}
+		else
+		{
+			x->parent = y;
+		}
 		rbtree_transplant(&root, z, y);
 		y->right = z->right;
 		y->right->parent = y;
@@ -353,12 +356,15 @@ rbtree *rbtree_delete(rbtree *root, char *key)
 	delete z;
 	z = RB_NULL;
 
-	rbtree_delete_fixup(&root, x);
+	if (ycolor == 'B')
+	{
+		rbtree_delete_fixup(&root, x);
+	}
 
 	return root;
 }
 
-void printTree(std::ostream &stream, rbtree *tree, int space)
+void printTree(std::ostream &stream, struct rbtree *tree, int space)
 {
 	if (tree == RB_NULL)
 		return;
@@ -371,7 +377,7 @@ void printTree(std::ostream &stream, rbtree *tree, int space)
 	printTree(stream, tree->left, space);
 }
 
-void fTree(const char NAME_TREE[], rbtree *root)
+void fTree(const char NAME_TREE[], struct rbtree *root)
 {
 	std::ofstream fout;
 	fout.open(NAME_TREE);
@@ -386,14 +392,14 @@ void fTree(const char NAME_TREE[], rbtree *root)
 }
 
 
-void rbtree_free(rbtree **tree)
+void rbtree_free(struct rbtree **tree)
 {
 	if (tree == nullptr)
 	{
 		return;
 	}
-	std::stack<rbtree *> stack;
-	rbtree *current = *tree;
+	std::stack<struct rbtree *> stack;
+	struct rbtree *current = *tree;
 	while (current != RB_NULL || !stack.empty())
 	{
 		while (current != RB_NULL)
@@ -403,7 +409,7 @@ void rbtree_free(rbtree **tree)
 		}
 		current = stack.top();
 		stack.pop();
-		rbtree *temp = current;
+		struct rbtree *temp = current;
 		current = current->right;
 		delete temp;
 	}
