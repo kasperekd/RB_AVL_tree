@@ -16,13 +16,26 @@ using namespace std;
 const char NAME_OF_DIC[] = "words.txt";
 const char NAME_OF_EXP[] = "lookup.txt";
 int STEP = 2500;
-int AMOUNT_TO_READ = 50000;
+int AMOUNT_TO_READ = 500000;
 
-int main()
+int main(int argc, char **argv)
 {
 	int dic_count;
 	char **dictionary = nullptr;
 	struct rbtree *RBroot;
+
+	if (argc > 1)
+	{
+		AMOUNT_TO_READ = atoi(argv[1]);
+		if (argc > 2)
+		{
+			STEP = atoi(argv[2]);
+			if (STEP < 1)
+			{
+				STEP = 1;
+			}
+		}
+	}
 
 	if (dictionary = readDictionary(NAME_OF_DIC, &dic_count, AMOUNT_TO_READ)) // Reading the original dictionary
 	{
@@ -93,7 +106,7 @@ int main()
 				struct rbtree *finded = rbtree_lookup(RBroot, word);
 				auto end_t = std::chrono::steady_clock::now();
 				auto elapsed_us = chrono::duration_cast<chrono::nanoseconds>(end_t - begin);
-				out << fixed << i + STEP - 1 << ": " << elapsed_us.count() / 1000000000.0 << '\t' << finded->key << endl;
+				out << fixed << i + STEP - 1 << " " << elapsed_us.count() / 1000000000.0 << '\t' << finded->key << endl;
 			}
 			out.close();
 			rbtree_free(&RBroot);
